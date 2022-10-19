@@ -17,7 +17,10 @@ Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 3. le registre et la valeur permettant de placer le composant en mode normal
 ola
 
-. les registres contenant l'étalonnage du composant
+4. les registres contenant l'étalonnage du composant
+
+Calibration register : 0xA1->0x88 
+
 . les registres contenant la température (ainsi que le format)
 . les registres contenant la pression (ainsi que le format)
 . les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
