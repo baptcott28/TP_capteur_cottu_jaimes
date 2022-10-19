@@ -74,16 +74,17 @@ void get_ID(void){
 
 	if(HAL_OK==HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,id_register,sizeof(uint8_t),HAL_MAX_DELAY)){
 		HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-		if(Rx_buffer[0]==0x58){
-			printf("c'est bien le BMP280\r\n");
+		if(Rx_buffer[0]==58){
+			printf("c'est bien le BMP280");
 		}
 		else{
-			printf("c'est pas le BMP280\r\n");
+			printf("c'est pas le BMP280");
 		}
 	}
 	else{
 		printf("master transmit failed \r\n");
 	}
+	printf(" ID BMP280 : %x \r\n",Rx_buffer[0]);
 }
 /* USER CODE END 0 */
 

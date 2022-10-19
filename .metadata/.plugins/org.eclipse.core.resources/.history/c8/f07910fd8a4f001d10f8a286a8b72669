@@ -32,7 +32,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BMP280_ADDR 0x77<<1		// read request
+#define BMP280_ADD_Read 11101111			// read request
+#define BMP280_ADD_Write 11101110			// write request
 #define BMP280_ADD_ID 0xD0				// Id adress
 
 /* USER CODE END PD */
@@ -52,7 +53,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t Tx_Buffer;
-uint8_t Rx_buffer[1];
+uint8_t Rx_buffer;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,23 +69,7 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void get_ID(void){
-	uint8_t id_register[1];
-	id_register[0]=BMP280_ADD_ID;
 
-	if(HAL_OK==HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,id_register,sizeof(uint8_t),HAL_MAX_DELAY)){
-		HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-		if(Rx_buffer[0]==0x58){
-			printf("c'est bien le BMP280\r\n");
-		}
-		else{
-			printf("c'est pas le BMP280\r\n");
-		}
-	}
-	else{
-		printf("master transmit failed \r\n");
-	}
-}
 /* USER CODE END 0 */
 
 /**
@@ -120,7 +105,12 @@ int main(void)
 	MX_I2C1_Init();
 	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
-	get_ID();
+
+	Tx_Buffer=BMP280_ADD_ID;
+	HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADD_Write,Tx_Buffer,sizeof(uint8_t),HAL_MAX_DELAY);
+	printf("%x\r\n",Tx_Buffer);
+	HAL_I2C_Master_Receive(&hi2c1,BMP280_ADD_Read,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
+	printf("adresse BMP280 : %x \r\n",Rx_buffer);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
