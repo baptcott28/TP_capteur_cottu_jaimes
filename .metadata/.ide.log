@@ -905,3 +905,157 @@
 2022-10-19 08:19:27,016 [INFO] ApiDb:447 - User favorites MCUs=[]
 2022-10-19 08:19:27,016 [INFO] ApiDb:443 - Save user favorites file C:\Users\bapti/.stm32cubeide/favorites.boards.txt: 0 item(s)
 2022-10-19 08:19:27,016 [INFO] ApiDb:447 - User favorites Boards=[]
+2022-10-19 08:33:47,625 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 712033024 Bytes (993001472)
+2022-10-19 08:33:49,833 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 284793656 Bytes (993001472)
+2022-10-19 08:33:53,145 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 454752480 Bytes (993001472)
+2022-10-19 08:33:53,598 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: SYS
+2022-10-19 08:33:53,598 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: RCC
+2022-10-19 08:33:53,598 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: NVIC
+2022-10-19 08:33:53,598 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2022-10-19 08:33:53,598 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: GPIO
+2022-10-19 08:33:53,598 [INFO] CodeGenerator:690 - code generatio: config db path: C:\ST\STM32CubeIDE_1.6.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.6.1.202207061420\\db\
+2022-10-19 08:33:53,883 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\license.tmp_save
+2022-10-19 08:33:54,021 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\license.tmp
+2022-10-19 08:33:54,084 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\gpio.tmp_save
+2022-10-19 08:33:54,209 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\gpio.tmp
+2022-10-19 08:33:54,319 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_it.c_save
+2022-10-19 08:33:54,460 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_it.c
+2022-10-19 08:33:54,485 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_it.h_save
+2022-10-19 08:33:54,616 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_it.h
+2022-10-19 08:33:54,647 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_hal_msp.c_save
+2022-10-19 08:33:54,804 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_hal_msp.c
+2022-10-19 08:33:54,832 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\system.tmp_save
+2022-10-19 08:33:54,929 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\system.tmp
+2022-10-19 08:33:54,945 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_hal_conf.h_save
+2022-10-19 08:33:55,118 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_hal_conf.h
+2022-10-19 08:33:55,180 [WARN] IPConfigManager:2910 - Warning: the RefConfig PLL2P_FOR_MCO is not available in your config.xml file
+2022-10-19 08:33:55,196 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\main.h_save
+2022-10-19 08:33:55,321 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\main.h
+2022-10-19 08:33:55,346 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\main.c_save
+2022-10-19 08:33:55,524 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\main.c
+2022-10-19 08:33:56,744 [INFO] ProjectBuilder:2919 - Time for Copy HAL[1] : 313mS.
+2022-10-19 08:33:56,744 [INFO] ProjectBuilder:4117 - Project Generator version: 3.17.1
+2022-10-19 08:33:57,135 [INFO] ConfigFileManager:1394 - The Die is : DIE421
+2022-10-19 08:33:59,559 [INFO] ProjectBuilder:4285 - Time for Generating toolchain IDE Files: 2815mS.
+2022-10-19 08:33:59,574 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 15mS.
+2022-10-19 08:33:59,574 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2022-10-19 09:18:27,927 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:27,927 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,021 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,021 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,021 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,021 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,052 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,052 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,052 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,052 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,146 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,146 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,146 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,146 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,224 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,224 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,235 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,235 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,243 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:28,243 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,529 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,529 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,654 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,654 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,654 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,654 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,763 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,763 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,763 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,763 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,951 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,951 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,951 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:58,951 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,044 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,044 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,091 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,091 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,154 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,154 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,169 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:18:59,169 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:02,890 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:02,890 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,046 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,046 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,046 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,046 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,109 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,109 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,109 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,109 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,249 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,249 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,265 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,265 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,296 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,296 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,352 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,352 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,406 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,406 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,421 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:19:03,421 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:20:28,207 [INFO] Can:70 - Can Add PropertyChangeListener com.st.microxplorer.plugins.ip.can.Can@7cdab0b
+2022-10-19 09:22:11,420 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,420 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,420 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,420 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,467 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,467 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,514 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:11,514 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,687 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,687 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,687 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,687 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,780 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,780 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,827 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:14,827 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:17,515 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 683858792 Bytes (997195776)
+2022-10-19 09:22:21,581 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 302651024 Bytes (997195776)
+2022-10-19 09:22:26,021 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 392895024 Bytes (997195776)
+2022-10-19 09:22:26,561 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: CAN
+2022-10-19 09:22:26,561 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: SYS
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: RCC
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: I2C
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: NVIC
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: USART
+2022-10-19 09:22:26,568 [INFO] BlockDiagram:2753 - set Specific Code input for plugin: GPIO
+2022-10-19 09:22:26,568 [INFO] CodeGenerator:690 - code generatio: config db path: C:\ST\STM32CubeIDE_1.6.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.6.1.202207061420\\db\
+2022-10-19 09:22:26,568 [WARN] IP:2111 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:26,568 [WARN] IP:2111 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2022-10-19 09:22:26,888 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\license.tmp_save
+2022-10-19 09:22:26,991 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\license.tmp
+2022-10-19 09:22:27,022 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\gpio.tmp_save
+2022-10-19 09:22:27,147 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\gpio.tmp
+2022-10-19 09:22:27,413 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_it.c_save
+2022-10-19 09:22:27,538 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_it.c
+2022-10-19 09:22:27,554 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_it.h_save
+2022-10-19 09:22:27,647 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_it.h
+2022-10-19 09:22:27,679 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_hal_msp.c_save
+2022-10-19 09:22:27,866 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\stm32f4xx_hal_msp.c
+2022-10-19 09:22:27,882 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\system.tmp_save
+2022-10-19 09:22:27,976 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\MXTmpFiles\system.tmp
+2022-10-19 09:22:27,991 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_hal_conf.h_save
+2022-10-19 09:22:28,148 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\stm32f4xx_hal_conf.h
+2022-10-19 09:22:28,180 [WARN] IPConfigManager:2910 - Warning: the RefConfig PLL2P_FOR_MCO is not available in your config.xml file
+2022-10-19 09:22:28,195 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\main.h_save
+2022-10-19 09:22:28,336 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Inc\main.h
+2022-10-19 09:22:28,352 [INFO] CodeEngine:245 - oldGeneratedFile, C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\main.c_save
+2022-10-19 09:22:28,570 [INFO] CodeEngine:269 - Generated code: C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\Core\Src\main.c
+2022-10-19 09:22:29,494 [INFO] ProjectBuilder:2919 - Time for Copy HAL[1] : 282mS.
+2022-10-19 09:22:29,509 [INFO] ProjectBuilder:4117 - Project Generator version: 3.17.1
+2022-10-19 09:22:30,292 [INFO] ConfigFileManager:1394 - The Die is : DIE421
+2022-10-19 09:22:32,386 [INFO] ProjectBuilder:4285 - Time for Generating toolchain IDE Files: 2877mS.
+2022-10-19 09:22:32,386 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
+2022-10-19 09:22:32,402 [INFO] ProjectBuilder:2790 - Time for Copy CMSIS : 0mS.
