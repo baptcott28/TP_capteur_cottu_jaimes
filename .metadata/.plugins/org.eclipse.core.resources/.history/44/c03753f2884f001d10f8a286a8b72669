@@ -109,9 +109,8 @@ int main(void)
 
 	Tx_Buffer=BMP280_ADD_ID;
 	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADD_Write,Tx_Buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-	printf("%x\r\n",Tx_Buffer);
 	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADD_Read,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-	printf("adresse BMP280 : %x \r\n",Rx_buffer);
+	printf("adresse BMP280 : %d \r\n",Rx_buffer);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */

@@ -107,11 +107,7 @@ int main(void)
 	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
 
-	Tx_Buffer=BMP280_ADD_ID;
-	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADD_Write,Tx_Buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-	printf("%x\r\n",Tx_Buffer);
-	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADD_Read,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-	printf("adresse BMP280 : %x \r\n",Rx_buffer);
+	Tx_buffer=BMP280_ADD_ID
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -119,6 +115,8 @@ int main(void)
 	while (1)
 	{
 		/* USER CODE END WHILE */
+		printf("Bonjour\r\n");
+		HAL_Delay(1000);
 		/* USER CODE BEGIN 3 */
 	}
 	/* USER CODE END 3 */

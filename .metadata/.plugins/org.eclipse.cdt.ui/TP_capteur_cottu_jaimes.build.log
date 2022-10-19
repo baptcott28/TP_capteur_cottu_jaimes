@@ -1,17 +1,10 @@
-09:48:45 **** Incremental Build of configuration Debug for project TP_capteur_cottu_jaimes ****
+10:37:06 **** Incremental Build of configuration Debug for project TP_capteur_cottu_jaimes ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "TP_capteur_cottu_jaimes.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TP_capteur_cottu_jaimes.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: TP_capteur_cottu_jaimes.elf
- 
 arm-none-eabi-size   TP_capteur_cottu_jaimes.elf 
-arm-none-eabi-objdump -h -S  TP_capteur_cottu_jaimes.elf  > "TP_capteur_cottu_jaimes.list"
    text	   data	    bss	    dec	    hex	filename
-  13748	    120	   1848	  15716	   3d64	TP_capteur_cottu_jaimes.elf
+  18540	    120	   1856	  20516	   5024	TP_capteur_cottu_jaimes.elf
 Finished building: default.size.stdout
  
-Finished building: TP_capteur_cottu_jaimes.list
- 
 
-09:48:47 Build Finished. 0 errors, 0 warnings. (took 1s.752ms)
+10:37:06 Build Finished. 0 errors, 0 warnings. (took 450ms)
 
