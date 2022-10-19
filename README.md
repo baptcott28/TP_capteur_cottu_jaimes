@@ -28,7 +28,10 @@ be selected using the mode[1:0] bits in control register 0xF4.
 Calibration register : 0xA1->0x88 
 
 5. les registres contenant la température (ainsi que le format)
-6. les registres contenant la pression (ainsi que le format)
+
+Tempeature registers from 0XFA to 0xFC. 0xFA = MSB[7:0] et 0xF8BLSB[7:0] et 0xFC (bit 7 6 5 4) en option a voir avec la résolution de la pression.
+
+7. les registres contenant la pression (ainsi que le format)
 
 Pressure registers from 0x07 to 0xF9. 0xF7 = MSB[7:0] et 0xF8=LSB[7:0] et 0xF9 (bit 7 6 5 4) en option a voir avec la résolution de la temperature.
 
