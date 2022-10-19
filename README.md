@@ -15,7 +15,13 @@ The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is c
 Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
 3. le registre et la valeur permettant de placer le composant en mode normal
-ola
+
+The BMP280 offers three power modes: sleep mode, forced mode and normal mode. These can
+be selected using the mode[1:0] bits in control register 0xF4.
+
+00 Sleep mode
+01 & 10 Foced mode
+11 Normal mode
 
 4. les registres contenant l'étalonnage du composant
 
