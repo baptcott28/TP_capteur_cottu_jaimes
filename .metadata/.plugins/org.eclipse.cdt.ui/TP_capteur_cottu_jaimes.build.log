@@ -1,38 +1,17 @@
-09:38:58 **** Incremental Build of configuration Debug for project TP_capteur_cottu_jaimes ****
+09:48:45 **** Incremental Build of configuration Debug for project TP_capteur_cottu_jaimes ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F446xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:110:43: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
-  110 |   HAL_UART_Transmit(&huart2,"bonjour\n\r",strlen("bonjour\n\r"),100);
-      |                                           ^~~~~~
-../Core/Src/main.c:110:43: warning: incompatible implicit declaration of built-in function 'strlen'
-../Core/Src/main.c:21:1: note: include '<string.h>' or provide a declaration of 'strlen'
-   20 | #include "main.h"
-  +++ |+#include <string.h>
-   21 | 
-../Core/Src/main.c:110:29: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
-  110 |   HAL_UART_Transmit(&huart2,"bonjour\n\r",strlen("bonjour\n\r"),100);
-      |                             ^~~~~~~~~~~~~
-      |                             |
-      |                             char *
-In file included from ../Core/Inc/stm32f4xx_hal_conf.h:407,
-                 from ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:29,
-                 from ../Core/Inc/main.h:30,
-                 from ../Core/Src/main.c:20:
-../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:722:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char *'
-  722 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-      |                                                                ~~~~~~~~~~~~~~~^~~~~
 arm-none-eabi-gcc -o "TP_capteur_cottu_jaimes.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\bapti\Documents\GitHub\TP_capteur_cottu_jaimes\TP_capteur_cottu_jaimes\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TP_capteur_cottu_jaimes.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: TP_capteur_cottu_jaimes.elf
  
 arm-none-eabi-size   TP_capteur_cottu_jaimes.elf 
 arm-none-eabi-objdump -h -S  TP_capteur_cottu_jaimes.elf  > "TP_capteur_cottu_jaimes.list"
    text	   data	    bss	    dec	    hex	filename
-  10728	     20	   1828	  12576	   3120	TP_capteur_cottu_jaimes.elf
+  13748	    120	   1848	  15716	   3d64	TP_capteur_cottu_jaimes.elf
 Finished building: default.size.stdout
  
 Finished building: TP_capteur_cottu_jaimes.list
  
 
-09:39:00 Build Finished. 0 errors, 3 warnings. (took 1s.768ms)
+09:48:47 Build Finished. 0 errors, 0 warnings. (took 1s.752ms)
 

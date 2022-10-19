@@ -109,7 +109,7 @@ int main(void)
 	{
 		/* USER CODE END WHILE */
 		//HAL_UART_Transmit(&huart2,"bonjour\n\r",strlen("bonjour\n\r"),100);
-		printf("Bonjour\r\n");
+		printf("Bonjour");
 		HAL_Delay(1000);
 		/* USER CODE BEGIN 3 */
 	}
