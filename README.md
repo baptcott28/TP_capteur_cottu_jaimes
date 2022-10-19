@@ -75,3 +75,5 @@ var2 = (((BMP280_S64_t)dig_P8) * p) >> 19;
 p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
 return (BMP280_U32_t)p;
 ```
+
+Affichage du printf : Bien vider le cache avec un \r\n pour l'affichage
