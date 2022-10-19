@@ -27,6 +27,8 @@ be selected using the mode[1:0] bits in control register 0xF4.
 
 Calibration register : 0xA1->0x88 
 
+dsqdqsd
+
 . les registres contenant la température (ainsi que le format)
 . les registres contenant la pression (ainsi que le format)
 . les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
