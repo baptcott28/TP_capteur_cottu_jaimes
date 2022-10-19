@@ -10,6 +10,7 @@ Le BMP280 est un capteur de pression et température développé par Bosch (page
 The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is changeable by SDO value and can be changed during operation. Connecting SDO to GND results in slave address 1110110 (0x76); connection it to VDDIO results in slave address 1110111 (0x77), which is the same as BMP180’s I²C address. The SDO pin cannot be left floating; if left floating, the I²C address will be undefined. 
 
 2. le registre et la valeur permettant d'identifier ce composant
+
 Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
 4. le registre et la valeur permettant de placer le composant en mode normal
