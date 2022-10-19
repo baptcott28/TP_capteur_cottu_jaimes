@@ -12,7 +12,7 @@ The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is c
 
 2. le registre et la valeur permettant d'identifier ce composant:
 
-Registre Id : 0xDO  et valeur : 0x58 
+Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
 3. le registre et la valeur permettant de placer le composant en mode normal
 ola
