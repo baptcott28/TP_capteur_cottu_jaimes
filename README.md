@@ -79,3 +79,5 @@ return (BMP280_U32_t)p;
 Affichage du printf : Bien vider le cache avec un \r\n pour l'affichage
 
 Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110111 (0x77)
+
+On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
