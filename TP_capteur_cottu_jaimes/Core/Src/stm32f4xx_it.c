@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,6 +59,7 @@
 
 /* USER CODE BEGIN EV */
 
+extern uint8_t Rx_order_buffer[ORDER_SIZE];
 /* USER CODE END EV */
 
 /******************************************************************************/
