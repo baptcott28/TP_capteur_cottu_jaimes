@@ -76,7 +76,7 @@ p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
 return (BMP280_U32_t)p;
 ```
 
-Affichage du printf : Bien vider le cache avec un \r\n pour l'affichage
+Affichage du printf : Bien vider le cache avec un `\r\n` pour l'affichage
 
 Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110111 (0x77)
 
@@ -85,6 +85,7 @@ On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (10
 ## User et Mdp
 
 User : jaimes
+
 Mdp : cottu_jaimes
 
 ## Serveur de base
@@ -100,7 +101,8 @@ On fait ensuite en sorte qu'il soit accessible à partir d'un navigateur. Pour y
 >http://192.168.88.249:5000/ 
 
 #### @add_route
-Comme son nom l'indique, `@app_route` ajoute une page au serveur. Celle-ci est accessible à partir de l'adresse de base en ajoutant le lien de la route créée : >http://168.192.88.249/api/welcome/ 
+Comme son nom l'indique, `@app_route` ajoute une page au serveur. Celle-ci est accessible à partir de l'adresse de base en ajoutant le lien de la route créée : 
+>http://168.192.88.249/api/welcome/ 
 
 #### <int:index>
 Permet d'identifier un caractère dont l'index est précisé après le dernier `/` de l'adresse entrée dans le navigateur.
@@ -136,4 +138,36 @@ Effectivement, nous avons un erreur de type 405 :  request not allowed
 
 > Image
 
-#### Methode 
+Pour signifier qu'une méthode est autorisée dans la page spécifiée, nous ajoutons ala ligne suivante dans notre code : 
+`@app.route('/api/welcome/<int:index>', methods=['GET','POST'])`. celle ci ne nous renvoie pas pour autant quelque chose. 
+
+#### Methode POST avec renvoi d'information
+
+Nous utilisons la fonction curl pour effectuer nos premieres requettes et remplir les champs. notre requette s'écrit sous la forme suivante :
+`curl -d '{"argc":"12", "data":"bonjour"}' -H "Content-Type: application/json" -X POST http://192.168.88.249/api/request/`
+
+Il faut faire attention à plusieurs points dans ces requettes : 
+- Ne pas oublier le slash a la fin de l'URL (ca sinon on signifie un dossier au lieu d'une URL)
+- Préciser le Content-Type de la requette
+- Ne pas oublier de mettre le -X devant le mot clé et le -d au début qui signifie que l'on met de la data dans la requette
+
+#### Implementation des réponses aux autres méthodes
+
+Avant d'implémenter les autres méthodes, il faut préciser a chaque fois le fichier dans lesquelles elle sont autorisées mais aussi lesquelles sont autorisées. Ceci se fait sous la forme suivante :
+`@app.route('api/<path>', methods=['XX1','XX2',...])`
+On définit ensuite la fonction qui va traiter chaque méthode.
+
+Nous ajoutons cle code suivant afin de traiter la méthode PUT dans la page `/api/welcome/`
+```P
+@app.route('/api/welcome/<int:index>',methods=['PUT'])
+def api_put(index):
+        global welcome
+        data = request.get_json()
+        if index > len(welcome):
+                abort(404)
+        else:
+                #construction de la nouvelle chaine
+                welcome = welcome[:index] + data + welcome[index:]
+                return welcome + '\r\n'
+```
+
