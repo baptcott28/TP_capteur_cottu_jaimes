@@ -87,9 +87,21 @@ On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (10
 User : jaimes
 Mdp : cottu_jaimes
 
-## Accessibilité du serveur 
+## Serveur
+
+A chaque fois que l'on modifie le fichier python du serveur, il faut le run avant de vouloir y acceder : 
+`pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0`
+
+###### Accessibilité du serveur 
 
 La variable name de `app = Flask(__name__)` est une variabe build-in donc on ne peut pas mettre ce qu'on veut. 
 Pour l'instant, le serveur ne fonctionne qu'en local d'ou l'adresse 127.0.0.1 et le serveur est accessible via le port 5000.
 On fait ensuite en sorte qu'il soit accessible à partir d'un navigateur. Pour y acceder, on doit rentrer l'adresse de la Rpi ainsi que le port :  
 >http://192.168.88.249:5000/ 
+
+###### @add_route
+Comme son nom l'indique, `@app_route` ajoute une page au serveur. Celle-ci est accessible à partir de l'adresse de base en ajoutant le lien de la route créée : >http://168.192.88.249/api/welcome/ 
+
+###### <int:index>
+Permet d'identifier un caractère dont l'index est précisé après le dernier `/` de l'adresse entrée dans le navigateur.
+>http://168.192.88.249/api/welcome/2   renvoie   `{"index": 2, "val": "l"}` 
