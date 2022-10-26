@@ -82,7 +82,8 @@ Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110
 
 On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
 
-#User et Mdp
+# User et Mdp
+
 User : jaimes
 Mdp : cottu_jaimes
 
