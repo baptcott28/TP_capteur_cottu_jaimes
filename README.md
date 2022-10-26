@@ -1,6 +1,6 @@
 # TP_capteur_cottu_jaimes
  
-Mise en œuvre du BMP280
+## Mise en œuvre du BMP280
 
 Le BMP280 est un capteur de pression et température développé par Bosch (page produit).
 
@@ -82,8 +82,14 @@ Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110
 
 On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
 
-# User et Mdp
+## User et Mdp
 
 User : jaimes
 Mdp : cottu_jaimes
 
+## Accessibilité du serveur 
+
+La variable name de `app = Flask(__name__)` est une variabe build-in donc on ne peut pas mettre ce qu'on veut. 
+Pour l'instant, le serveur ne fonctionne qu'en local d'ou l'adresse 127.0.0.1 et le serveur est accessible via le port 5000.
+On fait ensuite en sorte qu'il soit accessible à partir d'un navigateur. Pour y acceder, on doit rentrer l'adresse de la Rpi ainsi que le port :  
+>http://192.168.88.249:5000/ 
