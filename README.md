@@ -123,10 +123,17 @@ On copie colle le code source de la page erreur 404 et on crée une fonction qui
 def page_not_found(error):
     return render_template('page_not_found.html'), 404```
 
-```P
 def api_welcome_index(index):
         if index>19:
                 return page_not_found(404)
         else :
                 return jsonify({"index": index, "val": welcome[index]})
+```
 
+## Test de methode 
+#### Methode naive POST
+Effectivement, nous avons un erreur de type 405 :  request not allowed
+
+> Image
+
+#### Methode 
