@@ -110,12 +110,13 @@ Permet d'identifier un caractère dont l'index est précisé après le dernier `
 
 ## Serveur RESTfull
 #### Obtenir une réponse JSON
-Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante : 
-> image 1
+Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante (onglet network->Content-type) : 
 
-Pour remedier a cela, on ajoute `, {"Content-Type": "application/json"}` après `json.dumps()`. On a bien une réponse json.
+![Réponse de requette avec json.dumps()](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20ce%20n'est%20pas%20du%20json.jpg)
 
->image 2
+Pour remedier a cela, on ajoute `, {"Content-Type": "application/json"}` après `json.dumps()`. On a bien une réponse json. (onglet network->Content-type) : 
+
+![Réponse de requette avec le Content-Type ajouté](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20qui%20est%20bien%20du%20json.jpg)
 
 On peut aussi utiliser la commande `jsonify()` apres l'avoir importée dans le projet `from flask import jsonify`.
 
@@ -136,7 +137,7 @@ def api_welcome_index(index):
 #### Methode naive POST
 Effectivement, nous avons un erreur de type 405 :  request not allowed
 
-> Image
+![ Requette POST reussie ! ](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/methode%20post%20pas%20valide.jpg)
 
 Pour signifier qu'une méthode est autorisée dans la page spécifiée, nous ajoutons ala ligne suivante dans notre code : 
 `@app.route('/api/welcome/<int:index>', methods=['GET','POST'])`. celle ci ne nous renvoie pas pour autant quelque chose. 
@@ -170,4 +171,3 @@ def api_put(index):
                 welcome = welcome[:index] + data + welcome[index:]
                 return welcome + '\r\n'
 ```
-
