@@ -87,7 +87,7 @@ On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (10
 User : jaimes
 Mdp : cottu_jaimes
 
-## Serveur
+## Serveur de base
 
 A chaque fois que l'on modifie le fichier python du serveur, il faut le run avant de vouloir y acceder : 
 `pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0`
@@ -105,3 +105,14 @@ Comme son nom l'indique, `@app_route` ajoute une page au serveur. Celle-ci est a
 ###### <int:index>
 Permet d'identifier un caractère dont l'index est précisé après le dernier `/` de l'adresse entrée dans le navigateur.
 >http://168.192.88.249/api/welcome/2   renvoie   `{"index": 2, "val": "l"}` 
+
+## Serveur RESTfull
+###### obtenir une réponse JSON
+Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante : 
+> image 1
+
+Pour remedier a cela, on ajoute `, {"Content-Type": "application/json"}` après `json.dumps()`. On a bien une réponse json.
+
+>image 2
+
+On peut aussi utiliser la commande `jsonify()` apres l'avoir importée dans le projet `from flask import jsonify`.
