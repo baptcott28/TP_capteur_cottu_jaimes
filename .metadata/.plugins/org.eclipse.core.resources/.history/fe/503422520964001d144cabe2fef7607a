@@ -1,0 +1,20 @@
+/*
+ * motor.h
+ *
+ *  Created on: Nov 14, 2022
+ *      Author: bapti
+ */
+
+#ifndef SRC_MOTOR_H_
+#define SRC_MOTOR_H_
+
+#include "main.h"
+
+#define MOTOR_MODE_AUTO 2			//<! Mode automatique : data[position_absolue, sens_rotation]
+#define ANGLE_POSITIVE 0x00
+#define ANGLE_NEGATIVE 0x01
+#define ANGLE_90 0x5A
+
+void motor_tourne_delay(int delay);
+
+#endif /* SRC_MOTOR_H_ */

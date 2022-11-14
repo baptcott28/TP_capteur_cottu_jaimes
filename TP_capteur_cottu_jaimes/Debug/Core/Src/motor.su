@@ -1,1 +1,2 @@
-../Core/Src/motor.c:10:6:motor_tourne_delay	16	static
+../Core/Src/motor.c:14:9:motor_CAN_Init_Start	8	static
+../Core/Src/motor.c:30:9:motor_tourne	16	static
