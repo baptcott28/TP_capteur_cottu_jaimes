@@ -1,0 +1,5 @@
+../Core/Src/BMP.c:17:6:BMP_get_ID	24	static
+../Core/Src/BMP.c:35:6:BMP_send_Configuration	24	static
+../Core/Src/BMP.c:64:6:BMP_get_calibration_temp_press	24	static
+../Core/Src/BMP.c:80:10:BMP_get_temperature	32	static
+../Core/Src/BMP.c:91:10:BMP_get_press	32	static

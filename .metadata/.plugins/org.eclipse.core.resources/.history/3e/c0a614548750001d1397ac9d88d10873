@@ -1,0 +1,71 @@
+/*
+ * BMP.c
+ *
+ *  Created on: Oct 20, 2022
+ *      Author: bapti
+ */
+
+#include "BMP.h"
+
+
+uint8_t Rx_buffer[1];
+uint8_t calibration[25];
+uint8_t cal_register[23];
+
+void BMP_get_ID(void){
+	uint8_t id_register[1];
+	id_register[0]=BMP280_ADD_ID;
+
+	if(HAL_OK==HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,id_register,sizeof(uint8_t),HAL_MAX_DELAY)){
+		HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
+		if(Rx_buffer[0]==0x58){
+			printf("c'est bien le BMP280\r\n");
+		}
+		else{
+			printf("c'est pas le BMP280\r\n");
+		}
+	}
+	else{
+		printf("master transmit failed \r\n");
+	}
+}
+
+void BMP_send_Configuration(void){
+	uint8_t transmit[2];
+	transmit[0]=0xF4;
+	//char config2=(TEMPERATURE<<5)+(PRESSION<<2)+MODE_NORMAL;
+	//transmit[2]=(uint8_t) config2;		//Auquel cas on n'a pas besoin de la variable config
+	transmit[1]=CONFIG;
+	if(HAL_OK!=HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,transmit,sizeof(uint16_t),HAL_MAX_DELAY)){
+		printf("transmission failed\r\n");
+	}
+	else{
+		printf("transmission succed\r\n");
+	}
+
+	//verification de la config
+
+	if (HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY)!=HAL_OK){
+		printf("unable to check BMP configuration \r\n");
+	}
+	else {
+		if(Rx_buffer[0]!=CONFIG){
+			printf("configuration failed !\r\n");
+		}
+		else {
+			printf("configuration succeded !\r_n");
+		}
+	}
+}
+
+
+void BMP_get_calibration_temp_press(void){
+	for(int i=0;i<CALIB_PARAM;i++){
+		//demande
+		hal_I2c_transmit
+		//reception
+	}
+}
+
+
+

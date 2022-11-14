@@ -1,0 +1,3 @@
+../Core/Inc/comm_Rpi.c:20:6:clean_Rx_order_buffer	16	static
+../Core/Inc/comm_Rpi.c:26:6:Rx_order_buffer_analyse	16	static
+../Core/Inc/comm_Rpi.c:75:6:wait_for_order	8	static

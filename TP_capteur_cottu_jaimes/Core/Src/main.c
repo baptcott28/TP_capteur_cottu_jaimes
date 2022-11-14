@@ -23,6 +23,8 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include "BMP.h"
+#include "comm_Rpi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,21 +34,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BMP280_ADDR 0x77<<1				// read request
-#define BMP280_ADD_ID 0xD0				// Id adress
-#define BMP280_ADD_CONFIG 0xF4			// config adress
+#define MOTOR_MODE_AUTO 2
+#define ANGLE_POSITIVE 0x00
+#define ANGLE_NEGATIVE 0x01
+#define ANGLE_90 0x5A
 
-// configuration
-#define mode_normal 0b11
-#define pression 0b101
-#define temperature 0b010
-#define config 0x57
-
-#define TEMP_SIZE 20
-#define PRESS_SIZE 20
-#define ANGLE_SIZE 20
-#define COEFK_SIZE 20
-
+//header
+#define STD_ID 0x61			// for auto mode
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,6 +49,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
 
 I2C_HandleTypeDef hi2c1;
@@ -63,13 +58,9 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint8_t Rx_order_buffer[ORDER_SIZE];
-uint8_t Rx_buffer[1];
-uint8_t set_k[11]="SET_K=1234";
-char *temp;
-char *press;
-char *angle;
-char *coefK;
+uint8_t aData[MOTOR_MODE_AUTO];
+CAN_TxHeaderTypeDef pHeader;
+uint32_t * pTxMailbox;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,119 +70,13 @@ static void MX_USART2_UART_Init(void);
 static void MX_CAN2_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_CAN1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-void BMP_get_ID(void){
-	uint8_t id_register[1];
-	id_register[0]=BMP280_ADD_ID;
-
-	if(HAL_OK==HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,id_register,sizeof(uint8_t),HAL_MAX_DELAY)){
-		HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY);
-		if(Rx_buffer[0]==0x58){
-			printf("c'est bien le BMP280\r\n");
-		}
-		else{
-			printf("c'est pas le BMP280\r\n");
-		}
-	}
-	else{
-		printf("master transmit failed \r\n");
-	}
-}
-
-void BMP_send_Configuration(void){
-	uint8_t transmit[2];
-	transmit[0]=0xF4;
-	transmit[2]=config;
-	if(HAL_OK!=HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,transmit,sizeof(uint16_t),HAL_MAX_DELAY)){
-		printf("transmission failed\r\n");
-	}
-	else{
-		printf("transmission succed\r\n");
-	}
-
-	//verification de la config
-
-	if (HAL_I2C_Master_Receive(&hi2c1,BMP280_ADDR,Rx_buffer,sizeof(uint8_t),HAL_MAX_DELAY)!=HAL_OK){
-		printf("unable to check BMP configuration \r\n");
-	}
-	else {
-		if(Rx_buffer[0]!=config){
-			printf("configuration failed !\r\n");
-		}
-		else {
-			printf("configuration succeded !\r_n");
-		}
-	}
-}
-
-void BMP_get_calibration_temp_press(void){
-
-}
-
-void clean_Rx_order_buffer(void){
-	for(int i=0;i<ORDER_SIZE+1;i++){
-		Rx_order_buffer[i]=0;
-	}
-}
-
-void Rx_order_buffer_analyse(void){
-	if((Rx_order_buffer[0]==71)&&(Rx_order_buffer[1]==69)&&(Rx_order_buffer[2]==84)&&(Rx_order_buffer[3]==95)){
-		if((Rx_order_buffer[4]==84)){
-			//temp=get_temperature()
-			printf(temp);
-			printf("recu GET_T\r\n");
-		}
-		else if((Rx_order_buffer[4]==80)){
-			//press=get_pres()
-			printf(press);
-			printf("reçu GET_P\r\n");
-		}
-		else if((Rx_order_buffer[4]==65)){
-			//angle=get_angle()
-			printf(angle);
-			printf("reçu GET_A\r\n");
-		}
-		else if((Rx_order_buffer[4]=75)){
-			//coefK=get_coefK()
-			printf(coefK);
-			printf("reçu get_K\r\n");
-		}
-		else{
-			printf("commande invalide\r\n");
-		}
-	}
-	else if(Rx_order_buffer[0]==83){
-		int rx_index=0;
-		for(int i=0;i<11;i++){
-			if(Rx_order_buffer[i]!=set_k[i]){
-				printf("commande invalide\r\n");
-			}
-			else{
-				rx_index++;
-			}
-		}
-		if(rx_index==10){
-			//set_k()
-			printf("SET_K=SET_OK\r\n");
-		}
-		else{
-			printf("commande invalide\r\n");
-		}
-	}
-	clean_Rx_order_buffer();
-}
-
-
-void wait_for_order(void){
-	HAL_UART_Receive(&huart1, Rx_order_buffer,ORDER_SIZE,5000);
-	Rx_order_buffer_analyse();
-}
 
 /* USER CODE END 0 */
 
@@ -227,16 +112,34 @@ int main(void)
   MX_CAN2_Init();
   MX_I2C1_Init();
   MX_USART1_UART_Init();
+  MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-	//BMP_get_ID();
-	//BMP_send_Configuration();
+	/*BMP_get_ID();
+	BMP_send_Configuration();*/
+
+	//can header init
+	pHeader.StdId=STD_ID;
+	pHeader.IDE=CAN_ID_STD;
+	pHeader.RTR=CAN_RTR_DATA;
+	pHeader.DLC=MOTOR_MODE_AUTO;
+	pHeader.TransmitGlobalTime=DISABLE;
+
+	//fill data
+	*(aData)=ANGLE_90;
+	*(aData+1)=ANGLE_POSITIVE;
+
+	HAL_CAN_Start(&hcan1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		wait_for_order();
+		HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, pTxMailbox);
+		*(aData+1)=1-(*(aData+1));
+		HAL_Delay(1000);
+
+		//wait_for_order();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -289,6 +192,43 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief CAN1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CAN1_Init(void)
+{
+
+  /* USER CODE BEGIN CAN1_Init 0 */
+
+  /* USER CODE END CAN1_Init 0 */
+
+  /* USER CODE BEGIN CAN1_Init 1 */
+
+  /* USER CODE END CAN1_Init 1 */
+  hcan1.Instance = CAN1;
+  hcan1.Init.Prescaler = 28;
+  hcan1.Init.Mode = CAN_MODE_NORMAL;
+  hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_1TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_1TQ;
+  hcan1.Init.TimeTriggeredMode = DISABLE;
+  hcan1.Init.AutoBusOff = DISABLE;
+  hcan1.Init.AutoWakeUp = DISABLE;
+  hcan1.Init.AutoRetransmission = DISABLE;
+  hcan1.Init.ReceiveFifoLocked = DISABLE;
+  hcan1.Init.TransmitFifoPriority = DISABLE;
+  if (HAL_CAN_Init(&hcan1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CAN1_Init 2 */
+
+  /* USER CODE END CAN1_Init 2 */
+
 }
 
 /**

@@ -1,0 +1,27 @@
+/*
+ * BMP.h
+ *
+ *  Created on: Oct 20, 2022
+ *      Author: bapti
+ */
+#include "main.h"
+
+#ifndef SRC_BMP_H_
+#define SRC_BMP_H_
+
+#define BMP280_ADDR 0x77<<1				// read request
+#define BMP280_ADD_ID 0xD0				// Id adress
+#define BMP280_ADD_CONFIG 0xF4			// config adress
+
+#define mode_normal 0b11
+#define pression 0b101
+#define temperature 0b010
+#define config 0x57
+
+extern I2C_HandleTypeDef hi2c1;
+
+void BMP_get_ID(void);
+void BMP_send_Configuration(void);
+void BMP_get_calibration_temp_press(void);
+
+#endif /* SRC_BMP_H_ */
