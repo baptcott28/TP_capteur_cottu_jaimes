@@ -172,3 +172,13 @@ def api_put(index):
                 welcome = welcome[:index] + data + welcome[index:]
                 return welcome + '\r\n'
 ```
+
+#### Bus CAN
+On doit maintenant envoyer des consignes de positions à un moteur pas à pas dans le but de le faire aller alternativement a -90° et 90°. Pour cela, on utilise le bus CAN. On définit les structures suivantes pour construire les trames CAN:
+```C
+uint8_t aData[MOTOR_MODE_AUTO];
+CAN_TxHeaderTypeDef pHeader;
+uint32_t pTxMailbox;
+```
+
+`aData[]` est un tableau qui contient les données à envoyer, Ox5A pour l'angle de 90° en position absolue, et les deux macros `#define ANGLE_POSITIVE 0x00` et `#define ANGLE_NEGATIVE 0x01` 
