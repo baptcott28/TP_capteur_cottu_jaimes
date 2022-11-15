@@ -173,12 +173,38 @@ def api_put(index):
                 return welcome + '\r\n'
 ```
 
-#### Bus CAN
-On doit maintenant envoyer des consignes de positions à un moteur pas à pas dans le but de le faire aller alternativement a -90° et 90°. Pour cela, on utilise le bus CAN. On définit les structures suivantes pour construire les trames CAN:
+## Bus CAN
+
+On doit maintenant envoyer diverses consignes de position à un moteur pas à pas dans le but de le faire aller alternativement à -90° et 90°. Pour cela, on utilise le bus CAN 1 du STM32.
+
+#### Réglages CubeMx
+La datasheet du driver de bus CAN spécifie que la fréquence admise par le décodeur est de 500kB/s strictement. On règle donc l'horloge du bus de donnée que l'on abaisse à 80MHz. Ce n'est pas impactant pour les autres périphériques étant donnés que nous n'utilisons aucun timer sur ce projet. 
+
+On met ensuite les prescaler du bus à 16, puis les champs `Time Quanta bit Seglent 1` et `Time Quanta Bit Segment 2` à `2 Time`, pour se ramener finalement à 500000 bit/s. Les deux champs évoqués ci-dessus servent à régler l'instant de prise de décision sur le bit à décoder. 
+
+**Il faut impérativement mettre la même valeur aux deux champs sous peine de voir le code ne pas fonctionner.** 
+
+#### Code relatif au bus CAN 
+
+On définit les structures suivantes pour construire les trames CAN:
 ```C
 uint8_t aData[MOTOR_MODE_AUTO];
 CAN_TxHeaderTypeDef pHeader;
 uint32_t pTxMailbox;
 ```
+La ligne `#define MOTOR_MODE_AUTO 2`, permet d'initialiser aData avec deux cases qui contiendront les champs à envoyer pour commander le moteur en mode automatique. 
 
-`aData[]` est un tableau qui contient les données à envoyer, Ox5A pour l'angle de 90° en position absolue, et les deux macros `#define ANGLE_POSITIVE 0x00` et `#define ANGLE_NEGATIVE 0x01` 
+On définit ensuite plusieurs macros dans motor.h afin de pouvoir driver le moteur plus facilement : 
+```C
+#define ANGLE_POSITIVE 0x00
+#define ANGLE_NEGATIVE 0x01
+#define ANGLE_90 0x5A
+#define STD_ID 0x61					//<! Motor_ID in automatic mode
+```
+
+Nous devons ensuite initialiser le header de la trame en fixant notament la longueur du champ de données utiles, l'adresse du composant ainsi que l'objet de la trame (request data or send them to the device). Ceci est fait par la fonction `uint8_t motor_CAN_Init_Start(void)`, qui renvoie 1 si la fonction 'HAL_CAN_Start(&hcan1)' s'est bien passée, et qui affiche une erreur dans la console sinon. 
+
+L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité du moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas écheant. 
+
+
+
