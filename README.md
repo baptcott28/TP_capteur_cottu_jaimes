@@ -268,7 +268,7 @@ Nous devons ensuite initialiser le header de la trame en fixant notament la long
 
 L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité pour le moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas échéant. 
 
-##TP5 : Liason des deux
+## TP5 : Liason de la Rpi et de la STM32
 
 Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température. 
 
@@ -276,6 +276,6 @@ Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur
 
 Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes de la climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
 
-Les fonctions suivantes constutuent l'interface entre la Rpi et la STM32. Malheureusemnt, nous n'avons pas eu le temps de la tester.
+Les fonctions suivantes constituent l'interface entre la Rpi et la STM32. Malheureusemnt, nous n'avons pas eu le temps de la tester.
 
 
