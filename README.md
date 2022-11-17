@@ -1,4 +1,3 @@
-# INCLURE LA DOC DOXIGEN
 # TP_capteur_cottu_jaimes
  
 ## TP1 : Mise en œuvre du BMP280
@@ -235,6 +234,8 @@ def api_put(index):
                 return welcome + '\r\n'
 ```
 
+Le code du serveur avec la méthode PUT est dans le fichier nommé `Rpi_code_serveur.py`
+
 ## TP4 : Bus CAN
 
 On doit maintenant envoyer diverses consignes de position à un moteur pas à pas dans le but de le faire aller alternativement à -90° et 90°. Pour cela, on utilise le bus CAN 1 du STM32.
@@ -277,5 +278,21 @@ Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur
 Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes de la climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
 
 Les fonctions suivantes constituent l'interface entre la Rpi et la STM32. Malheureusemnt, nous n'avons pas eu le temps de la tester.
+
+La fonction suivante est le fichier à executer pour lancer l'interface de communication. 
+
+![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/fonction%20%C3%A0%20lancer%20pour%20envoyer%20un%20ordre.jpg)
+
+Pour donner un nom plus évocateur à notre fonction d'analyse, nous avons appelé la fonction `verification(user_command)` `analyse_command(user_command)`, dont le code est présenté ci-dessous.
+
+![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/analyse_STM_order.jpg)
+
+Ces fonctions sont définies ci-dessous
+
+![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/fonction_handle_reception.jpg)
+
+Enfin, on attend le retour d'information de la part de la STM avec la fonction `Reception_STM()`.
+
+![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/Rpi_reception_STM_orders.jpg)
 
 
