@@ -16,15 +16,14 @@ Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
 3. Le registre et la valeur permettant de placer le composant en mode normal
 
-Pour le réglage du BMP280, il faut rentrer une combinaison de deux bits dans un registre dont l'adresse est 0xF4. Le détail des deux bit est donné ci-dessous.
-
-00 Sleep mode
-01 & 10 Foced mode
-11 Normal mode
+Pour le réglage du BMP280, il faut rentrer une combinaison de deux bits dans un registre dont l'adresse est 0xF4. Le détail des deux bits est donné ci-dessous.
+- 00 Sleep mode
+- 01 & 10 Foced mode
+- 11 Normal mode
 
 4. Les registres contenant l'étalonnage du composant
 
-Les registres qui permettent la calibratin du composant sont les registres disponibles aux adresses 0xA1->0x88 
+Les registres qui permettent la calibration du composant sont les registres disponibles aux adresses 0xA1->0x88 
 
 5. Les registres contenant la température (ainsi que le format)
 
@@ -34,7 +33,7 @@ Les registres qui contiennent la température vont de l'adresse 0XFA à l'adress
 
 Les registres qui contiennt la pression vont de l'adresse 0x07 à l'adresse 0xF9. 0xF7 = MSB[7:0] et 0xF8 = LSB[7:0]. De même, le registre 0xF9 (bit 7 6 5 4) est configurable en option.
 
-7. Les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
+7. Les fonctions permettant le calcul de la température et de la pression compensée, en format entier 32 bits.
 
 La valeur de température arrive sur un entier 20 bits, mais on peut la transformer en valeur sur 32 bit en la compensant par la valeur de la pression
 ```C
@@ -86,11 +85,11 @@ uint32_t BMP_get_temperature(void);
 uint32_t BMP_get_press(void);
 int get_coef_k(void);
 ```
-On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (01). Contenu de la macro `CONFIG` (0X57 = 1010111).
+On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (01). Ces informations sont centenues dans la macro `CONFIG` (0X57 = 1010111).
 
 Toutes ces fonctions ont été testées et sont opérationnelles. 
 
-## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
+## TP2 : Prise en main de la Rpi et implémentation de la transmission série
 ### Interprétation commandes STM32
 L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpréter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c`, ligne 332).
 
@@ -107,6 +106,7 @@ void comm_Rx_order_buffer_analyse(void);
 void comm_wait_for_order(void);
 void comm_clean_Rx_order_buffer(void);
 ```
+Pour l'instant, l'attente de commandes se fait en mode polling mais on aurait pu mettre l'UART1 en mode interruption pour plus d'efficacité.
 ### Rpi : Etapes préliminaires
 
 On doit tout d'abord modifier plusieurs éléments dans les fichiers de boot de la Rpi pour la rendre accessible par SSH. On crée donc un fichier `SSH` (vide) dans le repertoire `boot`, puis un fichier `wpa_supplicant.conf` dans lequel on écrit le code suivant
@@ -127,8 +127,8 @@ dtoverlay=disable-bt
 ```
 Enfin, on configure l'UART en ajoutant la ligne `console=serial0,115200` dans le fichier `cmdline.txt`.
 ### Point clés
-Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
-Modifier un fichier : `nano nom_fichier`
+- Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
+- Modifier un fichier : `nano nom_fichier`
 
 ## TP3 : Serveur de base
 On commence par créer un utilisateur différent de pi sur la Rpi.
@@ -138,7 +138,7 @@ User : jaimes
 Mdp : cottu_jaimes
 
 ### Création premier fichier web
-On crée d'abord un fichier `serveur_jaimes` dasn lequel on crée le fichier `hello.py` et dans lequel on ajoute le code suivant :
+On crée d'abord un fichier `serveur_jaimes` dans lequel on crée le fichier `hello.py` et dans lequel on ajoute le code suivant :
 ```
 from flask import Flask
 app = Flask(__name__)
@@ -173,15 +173,15 @@ Permet d'identifier un caractère dont l'index est précisé après le dernier `
 
 ## Serveur RESTfull
 ### Obtenir une réponse JSON
-Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante ( navigateur : outils de developpement : onglet network->Content-type) : 
+Pour obtenir une réponse en JSON, on utilise la fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoigne l'image suivante ( navigateur : outils de developpement : onglet network->Content-type) : 
 
 ![Réponse de requette avec json.dumps()](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20ce%20n'est%20pas%20du%20json.jpg)
 
-Pour remedier a cela, on ajoute `, {"Content-Type": "application/json"}` après `json.dumps()`. On a bien une réponse json. (onglet network->Content-type) : 
+Pour remedier à cela, on ajoute `, {"Content-Type": "application/json"}` après `json.dumps()`. On a bien une réponse json. (onglet network->Content-type) : 
 
 ![Réponse de requette avec le Content-Type ajouté](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20qui%20est%20bien%20du%20json.jpg)
 
-On peut aussi utiliser la commande `jsonify()` après l'avoir importée dans le projet `from flask import jsonify`.
+On peut aussi utiliser la commande `jsonify()` après l'avoir importée dans le projet avec la ligne `from flask import jsonify`.
 
 #### Erreur 404
 On copie colle le code source de la page erreur 404 et on crée une fonction qui renvoie vers cette page lorsque l'index demandé est trop élevé. Pour cela, on appele juste la fonction qui génère la page d'erreur. 
@@ -202,16 +202,16 @@ Lorsque nous essayons de faire une requette non autorisée sur notre serveur, no
 
 ![ Requette POST reussie ! ](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/methode%20post%20pas%20valide.jpg)
 
-Pour signifier qu'une méthode est autorisée dans la page spécifiée, nous ajoutons ala ligne suivante dans notre code : 
-`@app.route('/api/welcome/<int:index>', methods=['GET','POST'])`. celle ci ne nous renvoie pas pour autant quelque chose. 
+Pour signifier qu'une méthode est autorisée dans la page spécifiée, nous ajoutons la ligne suivante dans notre code : 
+`@app.route('/api/welcome/<int:index>', methods=['GET','POST'])`. Celle ci ne nous renvoie pas pour autant quelque chose. 
 
 ### Methode POST avec renvoi d'information
 
-Nous utilisons la fonction curl pour effectuer nos premieres requettes et remplir les champs. Notre requette s'écrit sous la forme suivante :
+Nous utilisons la fonction curl pour effectuer nos premières requettes et remplir les champs. Notre requette s'écrit sous la forme suivante :
 `curl -d '{"argc":"12", "data":"bonjour"}' -H "Content-Type: application/json" -X POST http://192.168.88.249/api/request/`
 
 Il faut faire attention à plusieurs points dans ces requettes : 
-- Ne pas oublier le slash a la fin de l'URL (ca sinon on signifie un dossier au lieu d'une URL)
+- Ne pas oublier le slash à la fin de l'URL (ca sinon on signifie un dossier au lieu d'une URL)
 - Préciser le Content-Type de la requette
 - Ne pas oublier de mettre le -X devant le mot clé et le -d au début qui signifie que l'on met de la data dans la requette
 
@@ -221,7 +221,7 @@ Avant d'implémenter d'autres méthodes, il faut préciser à chaque fois la rou
 `@app.route('api/<path>', methods=['XX1','XX2',...])`
 On définit ensuite la fonction qui va traiter chaque méthode.
 
-Nous ajoutons le code suivant afin de traiter la méthode PUT dans la page `/api/welcome/`
+Par exemple, nous ajoutons le code suivant afin de traiter la méthode PUT dans la page `/api/welcome/`
 ```P
 @app.route('/api/welcome/<int:index>',methods=['PUT'])
 def api_put(index):
@@ -235,14 +235,14 @@ def api_put(index):
                 return welcome + '\r\n'
 ```
 
-## TP4 Bus CAN
+## TP4 : Bus CAN
 
 On doit maintenant envoyer diverses consignes de position à un moteur pas à pas dans le but de le faire aller alternativement à -90° et 90°. Pour cela, on utilise le bus CAN 1 du STM32.
 
 #### Réglages CubeMx
 La datasheet du driver de bus CAN spécifie que la fréquence admise par le décodeur est de 500kB/s strictement. On règle donc l'horloge du bus de donnée que l'on abaisse à 80MHz. Ce n'est pas impactant pour les autres périphériques étant donnés que nous n'utilisons aucun timer sur ce projet. 
 
-On met ensuite les prescaler du bus à 16, puis les champs `Time Quanta bit Seglent 1` et `Time Quanta Bit Segment 2` à `2 Time`, pour se ramener finalement à 500000 bit/s. Les deux champs évoqués ci-dessus servent à régler l'instant de prise de décision sur le bit à décoder. 
+On met ensuite le prescaler du bus à 16, puis les champs `Time Quanta bit Seglent 1` et `Time Quanta Bit Segment 2` à `2 Time`, pour se ramener finalement à 500000 bit/s. Les deux champs évoqués ci-dessus servent à régler l'instant de prise de décision sur le bit à décoder. 
 
 **Il faut impérativement mettre la même valeur aux deux champs sous peine de voir le code ne pas fonctionner.** 
 
@@ -266,13 +266,15 @@ On définit ensuite plusieurs macros dans motor.h afin de pouvoir driver le mote
 
 Nous devons ensuite initialiser le header de la trame en fixant notament la longueur du champ de données utiles, l'adresse du composant ainsi que l'objet de la trame (request data or send them to the device). Ceci est fait par la fonction `uint8_t motor_CAN_Init_Start(void)`, qui renvoie 1 si la fonction 'HAL_CAN_Start(&hcan1)' s'est bien passée, et qui affiche une erreur dans la console sinon. 
 
-L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité du moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas écheant. 
+L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité pour le moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas échéant. 
 
 ##TP5 : Liason des deux
 
-Pendant ce TP, nous avons voulu commencer par terminer les fonction commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température. 
+Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température. 
 
-Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur 8 bits (la fonction de compensation n'a pas fonctionnée) il à fallut gérer les données réceptionnées sur 32 bits. Pour cela, nous avons détourné l'usage du coefficient K pour diviser les valeur sur 32 bits par ce coeficient. Ainsi, nous nous sommes ramenées a des valeur  
+Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur 8 bits (la fonction de compensation n'ayant pas fonctionnée) il a fallut gérer les données réceptionnées sur 32 bits. Pour cela, nous avons détourné l'usage du coefficient K pour diviser les valeur sur 32 bits par ce coeficient. Ainsi, nous nous sommes ramenées à des valeures moins fluctantes.
+
+Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes de la climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
 
 Nous avons donc écrit la fonction 
 
