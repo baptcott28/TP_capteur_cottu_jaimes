@@ -2,41 +2,39 @@
 # TP_capteur_cottu_jaimes
  
 ## TP1 : Mise en œuvre du BMP280
+#### Réponse aux questions préliminaires sur le capteur
 
-Le BMP280 est un capteur de pression et température développé par Bosch (page produit).
+Le BMP280 est un capteur de pression et de température développé par Bosch ([Documentation](https://moodle.ensea.fr/pluginfile.php/59766/mod_resource/content/1/bst-bmp280-ds001.pdf)).
 
-À partir de la datasheet du BMP280, identifiez les éléments suivants:
+1. Les adresses I²C possibles pour ce composant:
 
-1. les adresses I²C possibles pour ce composant:
+L'adresse sur 7 bit est la suivante : 111011x. Le dernier bit diffère selon si la pin SDO est connectée sur le GND, auquel cas l'adresse devient 1110110 (0x76), ou bien si cette pin est connectée sur le VDD auquel cas l'adresse devient 1110111 (0x77). Sur la carte préfaite, on voit sur la datasheet que cette pin est connectée à VDDIO. 
 
-The 7-bit device address is 111011x. The 6 MSB bits are fixed. The last bit is changeable by SDO value and can be changed during operation. Connecting SDO to GND results in slave address 1110110 (0x76); connection it to VDDIO results in slave address 1110111 (0x77), which is the same as BMP180’s I²C address. The SDO pin cannot be left floating; if left floating, the I²C address will be undefined. 
-
-2. le registre et la valeur permettant d'identifier ce composant:
+2. Le registre et la valeur permettant d'identifier ce composant:
 
 Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
-3. le registre et la valeur permettant de placer le composant en mode normal
+3. Le registre et la valeur permettant de placer le composant en mode normal
 
-The BMP280 offers three power modes: sleep mode, forced mode and normal mode. These can
-be selected using the mode[1:0] bits in control register 0xF4.
+Pour le réglage du BMP280, il faut rentrer une combinaison de deux bits dans un registre dont l'adresse est 0xF4. Le détail des deux bit est donné ci-dessous.
 
 00 Sleep mode
 01 & 10 Foced mode
 11 Normal mode
 
-4. les registres contenant l'étalonnage du composant
+4. Les registres contenant l'étalonnage du composant
 
-Calibration register : 0xA1->0x88 
+Les registres qui permettent la calibratin du composant sont les registres disponibles aux adresses 0xA1->0x88 
 
-5. les registres contenant la température (ainsi que le format)
+5. Les registres contenant la température (ainsi que le format)
 
-Tempeature registers from 0XFA to 0xFC. 0xFA = MSB[7:0] et 0xF8BLSB[7:0] et 0xFC (bit 7 6 5 4) en option a voir avec la résolution de la pression.
+Les registres qui contiennent la température vont de l'adresse 0XFA à l'adresse 0xFC. 0xFA = MSB[7:0] et 0xFB = LSB[7:0]. Le registre 0xFC (bit 7 6 5 4) est configurable en option.
 
-7. les registres contenant la pression (ainsi que le format)
+6. Les registres contenant la pression (ainsi que le format)
 
-Pressure registers from 0x07 to 0xF9. 0xF7 = MSB[7:0] et 0xF8=LSB[7:0] et 0xF9 (bit 7 6 5 4) en option a voir avec la résolution de la temperature.
+Les registres qui contiennt la pression vont de l'adresse 0x07 à l'adresse 0xF9. 0xF7 = MSB[7:0] et 0xF8 = LSB[7:0]. De même, le registre 0xF9 (bit 7 6 5 4) est configurable en option.
 
-7. les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
+7. Les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
 
 La valeur de température arrive sur un entier 20 bits, mais on peut la transormer en valeur sur 32 bit en la compensant par la valeur de la pression
 ```C
@@ -77,15 +75,38 @@ p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
 return (BMP280_U32_t)p;
 ```
 
-Affichage du printf : Bien vider le cache avec un `\r\n` pour l'affichage
+#### Fonction d'interaction avec le capteur
+Pour récupérer les élements essentiels, on écrit les fonctions suivants, regroupées dans le fichier `motor.c`. Les macros utiles sont définies quand à elles dans le fichier `motor.h`.
 
-Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110111 (0x77)
-
+```C
+void BMP_get_ID(void);
+void BMP_send_Configuration(void);
+void BMP_get_calibration_temp_press(void);
+uint32_t BMP_get_temperature(void);
+uint32_t BMP_get_press(void);
+int get_coef_k(void);
+```
 On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
+
+Toutes ces fonctions ont été testées et sont opérationnelles. 
+
+## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
+#### Interprétation commandes STM32
+L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpreter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c` ligne 332).
+
+Le protocole de communiquation est le suivant. Il est reduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
+![image](https://user-images.githubusercontent.com/85641739/202512657-0fcd86e9-2cb5-42b2-8650-abe1fe6ed785.png)
+
+On active un deuxième port pour que les ordres ûissent arriver depuis la Rpi? UART1 relié a la console de l'ordi tandis que l'UART2 est reliée a la Rpi (UART2_Tx = PA2, UART2_Rx = PA3). 
+
+#### Point clés
+Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
+
+
 
 ##Completer avec l'écriture des fonction get_temperature, get pression etc
 
-## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
+
 
 
 #### Rpi : changement user et mdp
