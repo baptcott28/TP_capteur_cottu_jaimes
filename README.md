@@ -276,5 +276,6 @@ Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur
 
 Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes de la climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
 
-Nous avons donc écrit la fonction 
+Les fonctions suivantes constutuent l'interface entre la Rpi et la STM32. Malheureusemnt, nous n'avons pas eu le temps de la tester.
+
 
