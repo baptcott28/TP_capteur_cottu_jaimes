@@ -2,7 +2,7 @@
 # TP_capteur_cottu_jaimes
  
 ## TP1 : Mise en œuvre du BMP280
-#### Réponse aux questions préliminaires sur le capteur
+### Réponse aux questions préliminaires sur le capteur
 
 Le BMP280 est un capteur de pression et de température développé par Bosch ([Documentation](https://moodle.ensea.fr/pluginfile.php/59766/mod_resource/content/1/bst-bmp280-ds001.pdf)).
 
@@ -75,7 +75,7 @@ p = ((p + var1 + var2) >> 8) + (((BMP280_S64_t)dig_P7)<<4);
 return (BMP280_U32_t)p;
 ```
 
-#### Fonction d'interaction avec le capteur
+### Fonction d'interaction avec le capteur
 Pour récupérer les élements essentiels, on écrit les fonctions suivants, regroupées dans le fichier `motor.c`. Les macros utiles sont définies quand à elles dans le fichier `motor.h`.
 
 ```C
@@ -91,29 +91,50 @@ On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (10
 Toutes ces fonctions ont été testées et sont opérationnelles. 
 
 ## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
-#### Interprétation commandes STM32
+### Interprétation commandes STM32
 L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpreter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c` ligne 332).
 
 Le protocole de communiquation est le suivant. Il est reduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
+
 ![image](https://user-images.githubusercontent.com/85641739/202512657-0fcd86e9-2cb5-42b2-8650-abe1fe6ed785.png)
 
-On active un deuxième port pour que les ordres ûissent arriver depuis la Rpi? UART1 relié a la console de l'ordi tandis que l'UART2 est reliée a la Rpi (UART2_Tx = PA2, UART2_Rx = PA3). 
+On active un deuxième port pour que les ordres puissent arriver depuis la Rpi? UART1 relié a la console de l'ordi tandis que l'UART2 est reliée a la Rpi ( 115200 baud/s, UART2_Tx = PA2, UART2_Rx = PA3). 
 
-#### Point clés
-Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
+Pour interpreter les commandes arrivantes, on écrit les fonctions suivantes contenues dans le fichier `comm_Rpi.c`, les macros étant définies dans `comm_Rpi.h`.
 
+```C
+void comm_Rx_order_buffer_analyse(void);
+void comm_wait_for_order(void);
+void comm_clean_Rx_order_buffer(void);
+```
+### Rpi : Etapes préliminaires
 
+On doit tout d'abord modifier plusieurs éléments dans les fichiers de boot de la Rpi pour la rendre accessible par SSH. On crée donc un fichier `SSH` (vide) dans le repertoire `boot`, puis un fichier `wpa_supplicant.conf` dans lequel on écrit le code suivant
+``` 
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=FR
 
-##Completer avec l'écriture des fonction get_temperature, get pression etc
-
-
-
-
-#### Rpi : changement user et mdp
+network={
+ ssid="<Name of your wireless LAN>"
+ psk="<Password for your wireless LAN>"
+}
+```
+On active ensuite l'UART 1 en ajoutant les lignes suivantes dans le fichier `config.txt` sur la partition `boot` :
+```
+enable_uart=1
+dtoverlay=disable-bt
+```
+Enfin, on configure l'UART avec la ligne an ajoutant la ligne `console=serial0,115200` dans le fichier `cmdline.txt`.
+### Rpi : changement user et mdp
 
 User : jaimes
 
 Mdp : cottu_jaimes
+
+### Point clés
+Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
+Modifier un fichier : `nano nom_fichier`
 
 ## TP3 : Serveur de base
 
