@@ -1,7 +1,7 @@
 # INCLURE LA DOC DOXIGEN
 # TP_capteur_cottu_jaimes
  
-## Mise en œuvre du BMP280
+## TP1 : Mise en œuvre du BMP280
 
 Le BMP280 est un capteur de pression et température développé par Bosch (page produit).
 
@@ -83,13 +83,18 @@ Sur la carte, BMP280 est connécté a VDDIO donc l'adresse du composant est 1110
 
 On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
 
-## Rpi : changement user et mdp
+##Completer avec l'écriture des fonction get_temperature, get pression etc
+
+## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
+
+
+#### Rpi : changement user et mdp
 
 User : jaimes
 
 Mdp : cottu_jaimes
 
-## Serveur de base
+## TP3 : Serveur de base
 
 A chaque fois que l'on modifie le fichier python du serveur, il faut le run avant de vouloir y acceder : 
 `pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0`
@@ -173,7 +178,7 @@ def api_put(index):
                 return welcome + '\r\n'
 ```
 
-## Bus CAN
+## TP4 Bus CAN
 
 On doit maintenant envoyer diverses consignes de position à un moteur pas à pas dans le but de le faire aller alternativement à -90° et 90°. Pour cela, on utilise le bus CAN 1 du STM32.
 
@@ -206,5 +211,11 @@ Nous devons ensuite initialiser le header de la trame en fixant notament la long
 
 L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité du moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas écheant. 
 
+##TP5 : Liason des deux
 
+Pendant ce TP, nous avons voulu commencer par terminer les fonction commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température. 
+
+Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur 8 bits (la fonction de compensation n'a pas fonctionnée) il à fallut gérer les données réceptionnées sur 32 bits. Pour cela, nous avons détourné l'usage du coefficient K pour diviser les valeur sur 32 bits par ce coeficient. Ainsi, nous nous sommes ramenées a des valeur  
+
+Nous avons donc écrit la fonction 
 
