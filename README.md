@@ -36,7 +36,7 @@ Les registres qui contiennt la pression vont de l'adresse 0x07 à l'adresse 0xF9
 
 7. Les fonctions permettant le calcul de la température et de la pression compensées, en format entier 32 bits.
 
-La valeur de température arrive sur un entier 20 bits, mais on peut la transormer en valeur sur 32 bit en la compensant par la valeur de la pression
+La valeur de température arrive sur un entier 20 bits, mais on peut la transformer en valeur sur 32 bit en la compensant par la valeur de la pression
 ```C
 // Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
 // t_fine carries fine temperature as global value
@@ -76,7 +76,7 @@ return (BMP280_U32_t)p;
 ```
 
 ### Fonction d'interaction avec le capteur
-Pour récupérer les élements essentiels, on écrit les fonctions suivants, regroupées dans le fichier `motor.c`. Les macros utiles sont définies quand à elles dans le fichier `motor.h`.
+Pour récupérer les élements essentiels, on écrit les fonctions suivantes, regroupées dans le fichier `motor.c`. Les macros utiles sont définies quand à elles dans le fichier `motor.h`.
 
 ```C
 void BMP_get_ID(void);
@@ -86,19 +86,19 @@ uint32_t BMP_get_temperature(void);
 uint32_t BMP_get_press(void);
 int get_coef_k(void);
 ```
-On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (010)
+On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (01). Contenu de la macro `CONFIG` (0X57 = 1010111).
 
 Toutes ces fonctions ont été testées et sont opérationnelles. 
 
 ## TP2 : prise en main de la rpi et implementation de la trabsmission a faire
 ### Interprétation commandes STM32
-L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpreter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c` ligne 332).
+L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpréter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c`, ligne 332).
 
-Le protocole de communiquation est le suivant. Il est reduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
+Le protocole de communiquation est le suivant. Il est réduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
 
 ![image](https://user-images.githubusercontent.com/85641739/202512657-0fcd86e9-2cb5-42b2-8650-abe1fe6ed785.png)
 
-On active un deuxième port pour que les ordres puissent arriver depuis la Rpi? UART1 relié a la console de l'ordi tandis que l'UART2 est reliée a la Rpi ( 115200 baud/s, UART2_Tx = PA2, UART2_Rx = PA3). 
+On active un deuxième port pour que les ordres puissent arriver depuis la Rpi. L'UART1 est relié à la console de l'ordi tandis que l'UART2 est reliée à la Rpi ( 115200 baud/s, UART2_Tx = PA2, UART2_Rx = PA3). 
 
 Pour interpreter les commandes arrivantes, on écrit les fonctions suivantes contenues dans le fichier `comm_Rpi.c`, les macros étant définies dans `comm_Rpi.h`.
 
@@ -125,40 +125,55 @@ On active ensuite l'UART 1 en ajoutant les lignes suivantes dans le fichier `con
 enable_uart=1
 dtoverlay=disable-bt
 ```
-Enfin, on configure l'UART avec la ligne an ajoutant la ligne `console=serial0,115200` dans le fichier `cmdline.txt`.
-### Rpi : changement user et mdp
-
-User : jaimes
-
-Mdp : cottu_jaimes
-
+Enfin, on configure l'UART en ajoutant la ligne `console=serial0,115200` dans le fichier `cmdline.txt`.
 ### Point clés
 Affichage du printf : Bien vider le cache avec un `\r\n` pour que l'affichage s'execute.
 Modifier un fichier : `nano nom_fichier`
 
 ## TP3 : Serveur de base
+On commence par créer un utilisateur différent de pi sur la Rpi.
+### Rpi : changement user et mdp
+User : jaimes
 
-A chaque fois que l'on modifie le fichier python du serveur, il faut le run avant de vouloir y acceder : 
-`pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0`
+Mdp : cottu_jaimes
 
-#### Accessibilité du serveur 
+### Création premier fichier web
+On crée d'abord un fichier `serveur_jaimes` dasn lequel on crée le fichier `hello.py` et dans lequel on ajoute le code suivant :
+```
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!\n'
+```
+
+On démare le serveur avec la commande `pi@raspberrypi:~/server $ FLASK_APP=hello.py flask run`, et on le teste avec la commande `pi@raspberrypi:~/server $ curl http://127.0.0.1:5000`.
+
+### Accessibilité du serveur 
 
 La variable name de `app = Flask(__name__)` est une variabe build-in donc on ne peut pas mettre ce qu'on veut. 
 Pour l'instant, le serveur ne fonctionne qu'en local d'ou l'adresse 127.0.0.1 et le serveur est accessible via le port 5000.
-On fait ensuite en sorte qu'il soit accessible à partir d'un navigateur. Pour y acceder, on doit rentrer l'adresse de la Rpi ainsi que le port :  
+On fait ensuite en sorte qu'il soit accessible à partir d'un navigateur avec la commande
+
+`pi@raspberrypi:~/server $ FLASK_APP=hello.py FLASK_ENV=development flask run --host 0.0.0.0` 
+
+Pour y acceder, on doit rentrer l'adresse de la Rpi ainsi que le port :  
 >http://192.168.88.249:5000/ 
 
-#### @add_route
+`FLASK_ENV=development` permet de lancer le mode debug. 
+
+### @add_route
 Comme son nom l'indique, `@app_route` ajoute une page au serveur. Celle-ci est accessible à partir de l'adresse de base en ajoutant le lien de la route créée : 
 >http://168.192.88.249/api/welcome/ 
 
-#### <int:index>
+### <int:index>
 Permet d'identifier un caractère dont l'index est précisé après le dernier `/` de l'adresse entrée dans le navigateur.
 >http://168.192.88.249/api/welcome/2   renvoie   `{"index": 2, "val": "l"}` 
 
 ## Serveur RESTfull
-#### Obtenir une réponse JSON
-Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante (onglet network->Content-type) : 
+### Obtenir une réponse JSON
+Pour obtenir une réponse en JSON, on utilise les fonction `json.dumps()`. Le problème est que la réponse renvoyée n'est pas vraiment du json comme en témoign l'image suivante ( navigateur : outils de developpement : onglet network->Content-type) : 
 
 ![Réponse de requette avec json.dumps()](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20ce%20n'est%20pas%20du%20json.jpg)
 
@@ -166,10 +181,10 @@ Pour remedier a cela, on ajoute `, {"Content-Type": "application/json"}` après 
 
 ![Réponse de requette avec le Content-Type ajouté](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/requette%20jsaon%20qui%20est%20bien%20du%20json.jpg)
 
-On peut aussi utiliser la commande `jsonify()` apres l'avoir importée dans le projet `from flask import jsonify`.
+On peut aussi utiliser la commande `jsonify()` après l'avoir importée dans le projet `from flask import jsonify`.
 
 #### Erreur 404
-On copie colle le code source de la page erreur 404 et on crée une fonction qui renvoie vers cette page lorsuqe l'index demandé est trop élevé. Pour cela, on apele juste la fonction qui genere la page d'erreur. 
+On copie colle le code source de la page erreur 404 et on crée une fonction qui renvoie vers cette page lorsque l'index demandé est trop élevé. Pour cela, on appele juste la fonction qui génère la page d'erreur. 
 ```P
 def page_not_found(error):
     return render_template('page_not_found.html'), 404```
@@ -182,17 +197,17 @@ def api_welcome_index(index):
 ```
 
 ## Test de methode 
-#### Methode naive POST
-Effectivement, nous avons un erreur de type 405 :  request not allowed
+### Methode naive POST
+Lorsque nous essayons de faire une requette non autorisée sur notre serveur, nous avons une erreur de type 405 :  request not allowed
 
 ![ Requette POST reussie ! ](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/methode%20post%20pas%20valide.jpg)
 
 Pour signifier qu'une méthode est autorisée dans la page spécifiée, nous ajoutons ala ligne suivante dans notre code : 
 `@app.route('/api/welcome/<int:index>', methods=['GET','POST'])`. celle ci ne nous renvoie pas pour autant quelque chose. 
 
-#### Methode POST avec renvoi d'information
+### Methode POST avec renvoi d'information
 
-Nous utilisons la fonction curl pour effectuer nos premieres requettes et remplir les champs. notre requette s'écrit sous la forme suivante :
+Nous utilisons la fonction curl pour effectuer nos premieres requettes et remplir les champs. Notre requette s'écrit sous la forme suivante :
 `curl -d '{"argc":"12", "data":"bonjour"}' -H "Content-Type: application/json" -X POST http://192.168.88.249/api/request/`
 
 Il faut faire attention à plusieurs points dans ces requettes : 
@@ -202,11 +217,11 @@ Il faut faire attention à plusieurs points dans ces requettes :
 
 #### Implementation des réponses aux autres méthodes
 
-Avant d'implémenter les autres méthodes, il faut préciser a chaque fois le fichier dans lesquelles elle sont autorisées mais aussi lesquelles sont autorisées. Ceci se fait sous la forme suivante :
+Avant d'implémenter d'autres méthodes, il faut préciser à chaque fois la route dans lesquelles elle sont autorisées, mais aussi quelles méthodes sont autorisées dans la dite route. Ceci se fait sous la forme suivante :
 `@app.route('api/<path>', methods=['XX1','XX2',...])`
 On définit ensuite la fonction qui va traiter chaque méthode.
 
-Nous ajoutons cle code suivant afin de traiter la méthode PUT dans la page `/api/welcome/`
+Nous ajoutons le code suivant afin de traiter la méthode PUT dans la page `/api/welcome/`
 ```P
 @app.route('/api/welcome/<int:index>',methods=['PUT'])
 def api_put(index):
