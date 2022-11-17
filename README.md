@@ -234,7 +234,7 @@ def api_put(index):
                 return welcome + '\r\n'
 ```
 
-Le code du serveur avec la méthode PUT est dans le fichier nommé `Rpi_code_serveur.py`
+Le code du serveur avec la méthode PUT est dans le fichier nommé `Rpi_serveur_TP3.py`
 
 ## TP4 : Bus CAN
 
