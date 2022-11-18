@@ -25,6 +25,18 @@
 #define CONFIG 0x57
 #define CALIB_PARAM 25
 
+//Variables pour calculer la compensation
+typedef uint32_t BMP280_U32_t;
+typedef int32_t BMP280_S32_t;
+
+
+
+void BMP280_etalonnage();
+BMP280_S32_t bmp280_compensate_T_int32(BMP280_S32_t adc_T);
+BMP280_U32_t bmp280_compensate_P_int32(BMP280_S32_t adc_P);
+
+
+
 extern I2C_HandleTypeDef hi2c1;
 
 void BMP_get_ID(void);
@@ -32,5 +44,6 @@ void BMP_send_Configuration(void);
 void BMP_get_calibration_temp_press(void);
 uint32_t BMP_get_temperature(void);
 uint32_t BMP_get_press(void);
+int get_coef_k(void);
 
 #endif /* SRC_BMP_H_ */

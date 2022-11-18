@@ -6,12 +6,27 @@
  */
 
 #include "BMP.h"
+#include "motor.h"
 
 
 uint8_t Rx_buffer[1];
 uint8_t calibration[25]; 		//tableau qui va acceuillir la valeur des registres de calibration
 uint8_t raw_temperature[3];
 uint8_t raw_pressure[3];
+
+//Variables pour calibration
+uint16_t dig_T1;
+int16_t dig_T2;
+int16_t dig_T3;
+uint16_t dig_P1;
+int16_t dig_P2;
+int16_t dig_P3;
+int16_t dig_P4;
+int16_t dig_P5;
+int16_t dig_P6;
+int16_t dig_P7;
+int16_t dig_P8;
+int16_t dig_P9;
 
 
 void BMP_get_ID(void){
@@ -28,7 +43,7 @@ void BMP_get_ID(void){
 		}
 	}
 	else{
-		printf("master transmit failed \r\n");
+		printf("master transmit get_ID failed \r\n");
 	}
 }
 
@@ -39,10 +54,10 @@ void BMP_send_Configuration(void){
 	//transmit[2]=(uint8_t) config2;		//Auquel cas on n'a pas besoin de la variable config
 	transmit[1]=CONFIG;
 	if(HAL_OK!=HAL_I2C_Master_Transmit(&hi2c1,BMP280_ADDR,transmit,sizeof(uint16_t),HAL_MAX_DELAY)){
-		printf("transmission failed\r\n");
+		printf("transmission configuration failed\r\n");
 	}
 	else{
-		printf("transmission succed\r\n");
+		printf("transmission configuration succed\r\n");
 	}
 
 	//verification de la config
@@ -77,6 +92,73 @@ void BMP_get_calibration_temp_press(void){
 	}
 }
 
+void BMP280_etalonnage(){
+	// Lecture des «trimming parameters»
+	uint8_t calibration[26]; //tableau des variables
+	uint8_t REG_trimming_parameter = 0x88; //premier address
+
+	HAL_I2C_Master_Transmit(&hi2c1, BMP280_ADDR, &REG_trimming_parameter, 1, HAL_MAX_DELAY);
+	HAL_I2C_Master_Receive(&hi2c1, BMP280_ADDR, calibration, 26, HAL_MAX_DELAY);
+
+	dig_T1 = (uint16_t)calibration[1] << 8 | calibration[0];
+	dig_T2 = (int16_t)calibration[3] << 8 | calibration[2];
+	dig_T3 = (int16_t)calibration[5] << 8 | calibration[4];
+	dig_P1 = (uint16_t)calibration[7] << 8 | calibration[6];
+	dig_P2 = (int16_t)calibration[9] << 8 | calibration[8];
+	dig_P3 = (int16_t)calibration[11] << 8 | calibration[10];
+	dig_P4 = (int16_t)calibration[13] << 8 | calibration[12];
+	dig_P5 = (int16_t)calibration[15] << 8 | calibration[14];
+	dig_P6 = (int16_t)calibration[17] << 8 | calibration[16];
+	dig_P7 = (int16_t)calibration[19] << 8 | calibration[18];
+	dig_P8 = (int16_t)calibration[21] << 8 | calibration[20];
+	dig_P9 = (int16_t)calibration[23] << 8 | calibration[22];
+}
+
+//==============Compensation formula in 32 bit fixed point
+// Returns temperature in DegC, resolution is 0.01 DegC. Output value of “5123” equals 51.23 DegC.
+// t_fine carries fine temperature as global value
+BMP280_S32_t t_fine;
+BMP280_S32_t bmp280_compensate_T_int32(BMP280_S32_t adc_T)
+{
+	BMP280_S32_t var1, var2, T;
+	var1 = ((((adc_T>>3) - ((BMP280_S32_t)dig_T1<<1))) * ((BMP280_S32_t)dig_T2)) >> 11;
+	var2 = (((((adc_T>>4) - ((BMP280_S32_t)dig_T1)) * ((adc_T>>4) - ((BMP280_S32_t)dig_T1))) >> 12) *
+			((BMP280_S32_t)dig_T3)) >> 14;
+	t_fine = var1 + var2;
+	T = (t_fine * 5 + 128) >> 8;
+	return T;
+}
+
+// Returns pressure in Pa as unsigned 32 bit integer. Output value of “96386” equals 96386 Pa = 963.86 hPa
+BMP280_U32_t bmp280_compensate_P_int32(BMP280_S32_t adc_P)
+{
+	BMP280_S32_t var1, var2;
+	BMP280_U32_t p;
+	var1 = (((BMP280_S32_t)t_fine)>>1) - (BMP280_S32_t)64000;
+	var2 = (((var1>>2) * (var1>>2)) >> 11 ) * ((BMP280_S32_t)dig_P6);
+	var2 = var2 + ((var1*((BMP280_S32_t)dig_P5))<<1);
+	var2 = (var2>>2)+(((BMP280_S32_t)dig_P4)<<16);
+	var1 = (((dig_P3 * (((var1>>2) * (var1>>2)) >> 13 )) >> 3) + ((((BMP280_S32_t)dig_P2) * var1)>>1))>>18;
+	var1 =((((32768+var1))*((BMP280_S32_t)dig_P1))>>15);
+	if (var1 == 0)
+	{
+		return 0; // avoid exception caused by division by zero
+	}
+	p = (((BMP280_U32_t)(((BMP280_S32_t)1048576)-adc_P)-(var2>>12)))*3125;
+	if (p < 0x80000000)
+	{
+		p = (p << 1) / ((BMP280_U32_t)var1);
+	}
+	else
+	{
+		p = (p / (BMP280_U32_t)var1) * 2;
+	}
+	var1 = (((BMP280_S32_t)dig_P9) * ((BMP280_S32_t)(((p>>3) * (p>>3))>>13)))>>12;
+	var2 = (((BMP280_S32_t)(p>>2)) * ((BMP280_S32_t)dig_P8))>>13;
+	p = (BMP280_U32_t)((BMP280_S32_t)p + ((var1 + var2 + dig_P7) >> 4));
+	return p;
+}
+
 uint32_t BMP_get_temperature(void){
 	uint8_t transmit[1];
 	for(int i=0; i<3;i++){
@@ -98,4 +180,9 @@ uint32_t BMP_get_press(void){
 	uint32_t pression_32bit = (raw_pressure[0]<<16)+(raw_pressure[1]<<8)+(raw_pressure[2]);
 	return pression_32bit;
 }
+
+int get_coef_k(void){
+	return COEF_K;
+}
+
 

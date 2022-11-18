@@ -1,5 +1,9 @@
-../Core/Src/BMP.c:17:6:BMP_get_ID	24	static
-../Core/Src/BMP.c:35:6:BMP_send_Configuration	24	static
-../Core/Src/BMP.c:64:6:BMP_get_calibration_temp_press	24	static
-../Core/Src/BMP.c:80:10:BMP_get_temperature	32	static
-../Core/Src/BMP.c:91:10:BMP_get_press	32	static
+../Core/Src/BMP.c:32:6:BMP_get_ID	24	static
+../Core/Src/BMP.c:50:6:BMP_send_Configuration	24	static
+../Core/Src/BMP.c:79:6:BMP_get_calibration_temp_press	24	static
+../Core/Src/BMP.c:95:6:BMP280_etalonnage	48	static
+../Core/Src/BMP.c:121:14:bmp280_compensate_T_int32	32	static
+../Core/Src/BMP.c:133:14:bmp280_compensate_P_int32	32	static
+../Core/Src/BMP.c:162:10:BMP_get_temperature	32	static
+../Core/Src/BMP.c:173:10:BMP_get_press	32	static
+../Core/Src/BMP.c:184:5:get_coef_k	4	static

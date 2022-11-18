@@ -8,34 +8,31 @@
 #include "comm_Rpi.h"
 #include "BMP.h"
 
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+
 uint8_t Rx_order_buffer[ORDER_SIZE];
 uint8_t set_k[11]="SET_K=1234";
-uint32_t temp=0;
-uint32_t press=0;
-char *ptemp;
-char *ppress;
+uint32_t temperature=0;
+uint32_t pression=0;
+int coefK=0;
 char *pangle;
-char *pcoefK;
 
-void clean_Rx_order_buffer(void){
+void comm_clean_Rx_order_buffer(void){
 	for(int i=0;i<ORDER_SIZE+1;i++){
 		Rx_order_buffer[i]=0;
 	}
 }
 
-void Rx_order_buffer_analyse(void){
+void comm_Rx_order_buffer_analyse(void){
 	if((Rx_order_buffer[0]==71)&&(Rx_order_buffer[1]==69)&&(Rx_order_buffer[2]==84)&&(Rx_order_buffer[3]==95)){
 		if((Rx_order_buffer[4]==84)){
-			temp=BMP_get_temperature();
-			ptemp=(char*)&temp;
-			printf(ptemp);
-			printf("recu GET_T\r\n");
+			temperature=BMP_get_temperature();
+			printf("temperature : %ld\r\n",temperature);
 		}
 		else if((Rx_order_buffer[4]==80)){
-			press=BMP_get_press();
-			ppress=(char*)&press;
-			printf(ppress);
-			printf("reçu GET_P\r\n");
+			pression=BMP_get_press();
+			printf("pression : %ld\r\n",pression);
 		}
 		else if((Rx_order_buffer[4]==65)){
 			//angle=get_angle()
@@ -43,9 +40,8 @@ void Rx_order_buffer_analyse(void){
 			printf("reçu GET_A\r\n");
 		}
 		else if((Rx_order_buffer[4]=75)){
-			//coefK=get_coefK()
-			printf(pcoefK);
-			printf("reçu GET_K\r\n");
+			coefK=get_coef_k();
+			printf("Coefficient K : %d\r\n", coefK);
 		}
 		else{
 			printf("commande invalide\r\n");
@@ -71,8 +67,12 @@ void Rx_order_buffer_analyse(void){
 	}
 }
 
-void wait_for_order(void){
-	HAL_UART_Receive(&huart1, Rx_order_buffer,ORDER_SIZE,5000);
-	Rx_order_buffer_analyse();
-	clean_Rx_order_buffer();
+void comm_wait_for_order(void){
+	printf("entree :\r\n");
+	HAL_UART_Receive(&huart2, Rx_order_buffer,ORDER_SIZE,5000);
+	printf("sortie : \r\n");
+	HAL_UART_Transmit(&huart2, Rx_order_buffer, ORDER_SIZE,100);
+	printf("\r\n");
+	comm_Rx_order_buffer_analyse();
+	comm_clean_Rx_order_buffer();
 }

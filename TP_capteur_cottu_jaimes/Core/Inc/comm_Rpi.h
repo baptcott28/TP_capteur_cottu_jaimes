@@ -23,8 +23,8 @@
 
 extern UART_HandleTypeDef huart1;
 
-void Rx_order_buffer_analyse(void);
-void wait_for_order(void);
-void clean_Rx_order_buffer(void);
+void comm_Rx_order_buffer_analyse(void);
+void comm_wait_for_order(void);
+void comm_clean_Rx_order_buffer(void);
 
 #endif /* INC_COMM_RPI_H_ */
