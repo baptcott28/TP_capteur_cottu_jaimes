@@ -269,7 +269,7 @@ Nous devons ensuite initialiser le header de la trame en fixant notament la long
 L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité pour le moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas échéant. 
 
 ## TP5 : Liaison de la Rpi et de la STM32
-Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température, et a terminé l'interprétation des ordres par la STM32.
+Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un implémentait les fonctions de compensation ainsi que l'interface STM-Rpi, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température, et a terminé l'interprétation des ordres par la STM32.
 
 ### Terminaison de l'interprétation des ordres par la STM32
 On termine d'abord la rédaction de l'interprétation des ordres arrivant par l'UART dans la STM. L'interprétation d'un ordre est réalisée sous la forme suivante. On analyse d'abord les quatre premiers caractères pour savoir si c'est bien un mot de la forme `SET_` ou `GET_`, et on `switch` sur le dernier caractère pour orienter vers la bonne fonction.
@@ -294,11 +294,15 @@ Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur
 Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes d'un système de climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
 
 ### Fonction de compensation Pression-Température
+La compensation des valeurs 32 bits de la pression et de la température se font à l'aide de mots de compensations. Chaque mot de compensation est une valeur entière signée ou non signée de 16 bits stockée en complément à deux. La mémoire étant organisée en mots de 8 bits, deux mots doivent toujours être combinés pour représenter le mot de compensation. Les registres 8 bits sont nommés calib00…calib25 et sont stockés aux adresses mémoire 0x88…0xA1. Les mots de compensation correspondants sont nommés dig_T# pour les valeurs liées à la compensation de température et dig_P# pour les valeurs liées à la compensation de pression.
 
-
-
-Chaque mot de compensation est une valeur entière signée ou non signée de 16 bits stockée en complément à deux. La mémoire étant organisée en mots de 8 bits, deux mots doivent toujours être combinés pour représenter le mot de compensation. Les registres 8 bits sont nommés calib00…calib25 et sont stockés aux adresses mémoire 0x88…0xA1. Les mots de compensation correspondants sont nommés dig_T# pour les valeurs liées à la compensation de température et dig_P# pour les valeurs liées à la compensation de pression.
-
+On écrit donc les fonctions suivantes : 
+```C
+void BMP280_etalonnage();
+BMP280_S32_t bmp280_compensate_T_int32(BMP280_S32_t adc_T);
+BMP280_U32_t bmp280_compensate_P_int32(BMP280_S32_t adc_P);
+```
+La fonction d'étalonnage nous permet de mettre à jour les valeurs des mots de compensation, tandis que les deux fonctions suivantes se servent de ces mots de compensation pour réaliser l'opération qui sort une température et une pression au format "1234", ce qui veut dire "12,34°C". Lors de l'execution, les fonctions renvoient un résultat mais il semble y avoir un offset de 20°C à chaque exécution. Nous avons testé ces fonctions à la fin et n'avons pas eu le temps de mettre à jour `motor_handle()`.
 
 ### Interfaçage STM32-Rpi
 
