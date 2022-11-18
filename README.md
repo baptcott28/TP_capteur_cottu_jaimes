@@ -17,7 +17,7 @@ Registre Id : 0xD0 (chip identification number) et la valeur attendue est 0x58
 
 Pour le réglage du BMP280, il faut rentrer une combinaison de deux bits dans un registre dont l'adresse est 0xF4. Le détail des deux bits est donné ci-dessous.
 - 00 Sleep mode
-- 01 & 10 Foced mode
+- 01 & 10 Forced mode
 - 11 Normal mode
 
 4. Les registres contenant l'étalonnage du composant
@@ -84,21 +84,21 @@ uint32_t BMP_get_temperature(void);
 uint32_t BMP_get_press(void);
 int get_coef_k(void);
 ```
-On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (01). Ces informations sont centenues dans la macro `CONFIG` (0X57 = 1010111).
+On configure ensuite le BMP280 en mode normal (11), pressure oversamplingx16 (101) et temperature x2 (01). Ces informations sont contenues dans la macro `CONFIG` (0X57 = 1010111).
 
 Toutes ces fonctions ont été testées et sont opérationnelles. 
 
 ## TP2 : Prise en main de la Rpi et implémentation de la transmission série
 ### Interprétation commandes STM32
-L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpréter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10). Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c`, ligne 332).
+L'objetif de ce TP est de créer une interface entre la Raspberry et la carte STM32. Il s'agit donc de pouvoir interpréter des commandes arrivant par UART. Pour cela, on active l'UART1 (115200baud/s, UART1_Tx = PA9, UART1_Rx = PA10), et, Pour plus de simplicité dans le code, on redirige le printf sur cet UART (fichier `stm32f4xx_hal_msp.c`, ligne 332).
 
-Le protocole de communiquation est le suivant. Il est réduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
+Le protocole de communication est le suivant. Il est réduit au plus simple de sorte à ce qu'il n'y ait qu'une valeur qui change d'un ordre à un autre pour en faciliter le décodage. 
 
 ![image](https://user-images.githubusercontent.com/85641739/202512657-0fcd86e9-2cb5-42b2-8650-abe1fe6ed785.png)
 
 On active un deuxième port pour que les ordres puissent arriver depuis la Rpi. L'UART1 est relié à la console de l'ordi tandis que l'UART2 est reliée à la Rpi ( 115200 baud/s, UART2_Tx = PA2, UART2_Rx = PA3). 
 
-Pour interpreter les commandes arrivantes, on écrit les fonctions suivantes contenues dans le fichier `comm_Rpi.c`, les macros étant définies dans `comm_Rpi.h`.
+Pour interpréter les commandes arrivantes, on écrit les fonctions suivantes contenues dans le fichier `comm_Rpi.c`, les macros étant définies dans `comm_Rpi.h`.
 
 ```C
 void comm_Rx_order_buffer_analyse(void);
@@ -132,9 +132,8 @@ Enfin, on configure l'UART en ajoutant la ligne `console=serial0,115200` dans le
 ## TP3 : Serveur de base
 On commence par créer un utilisateur différent de pi sur la Rpi.
 ### Rpi : changement user et mdp
-User : jaimes
-
-Mdp : cottu_jaimes
+- User : jaimes
+- Mdp : cottu_jaimes
 
 ### Création premier fichier web
 On crée d'abord un fichier `serveur_jaimes` dans lequel on crée le fichier `hello.py` et dans lequel on ajoute le code suivant :
@@ -216,7 +215,7 @@ Il faut faire attention à plusieurs points dans ces requettes :
 
 #### Implementation des réponses aux autres méthodes
 
-Avant d'implémenter d'autres méthodes, il faut préciser à chaque fois la route dans lesquelles elle sont autorisées, mais aussi quelles méthodes sont autorisées dans la dite route. Ceci se fait sous la forme suivante :
+Avant d'implémenter d'autres méthodes, il faut préciser à chaque fois la route dans laquelle elles sont autorisées, mais aussi quelles méthodes sont autorisées dans la-dite route. Ceci se fait sous la forme suivante :
 `@app.route('api/<path>', methods=['XX1','XX2',...])`
 On définit ensuite la fonction qui va traiter chaque méthode.
 
@@ -265,17 +264,43 @@ On définit ensuite plusieurs macros dans motor.h afin de pouvoir driver le mote
 #define STD_ID 0x61					//<! Motor_ID in automatic mode
 ```
 
-Nous devons ensuite initialiser le header de la trame en fixant notament la longueur du champ de données utiles, l'adresse du composant ainsi que l'objet de la trame (request data or send them to the device). Ceci est fait par la fonction `uint8_t motor_CAN_Init_Start(void)`, qui renvoie 1 si la fonction 'HAL_CAN_Start(&hcan1)' s'est bien passée, et qui affiche une erreur dans la console sinon. 
+Nous devons ensuite initialiser le header de la trame en fixant notament la longueur du champ de données utiles, l'adresse du composant ainsi que l'objet de la trame (request data or send them to the device). Ceci est fait par la fonction `uint8_t motor_CAN_Init_Start(void)`, qui renvoie 1 si la fonction `HAL_CAN_Start(&hcan1)` s'est bien passée, et qui affiche une erreur dans la console sinon. 
 
 L'envoi de consignes au moteur se fait par le biais de la fonction `uint8_t motor_tourne(uint8_t angular_position, uint8_t rotation_direction)`. Cette fonction prend en argument la position angulaire désirée (position absolue), mais aussi le sens de rotation souhaité pour le moteur. De la même manière que la fonction précédante, elle renvoie 1 si la fonction `HAL_CAN_AddTxMessage(&hcan1, &pHeader, aData, &pTxMailbox)` s'est bien passée, ou affiche une erreur dans la console le cas échéant. 
 
-## TP5 : Liason de la Rpi et de la STM32
+## TP5 : Liaison de la Rpi et de la STM32
+Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température, et a terminé l'interprétation des ordres par la STM32.
 
-Pendant ce TP, nous avons voulu commencer par terminer les fonctions commencées précédement mais aussi les tester. Pendant que l'un essayait de faire fonctionner la compensation de pression et de temperature, l'autre a écrit la fonction `void motor_handle(void)` qui gère l'action du moteur en fonction des variations de température. 
+### Terminaison de l'interprétation des ordres par la STM32
+On termine d'abord la rédaction de l'interprétation des ordres arrivant par l'UART dans la STM. L'interprétation d'un ordre est réalisée sous la forme suivante. On analyse d'abord les quatre premiers caractères pour savoir si c'est bien un mot de la forme `SET_` ou `GET_`, et on `switch` sur le dernier caractère pour orienter vers la bonne fonction.
 
+```C
+void comm_Rx_order_buffer_analyse(void){
+	if((Rx_order_buffer[0]==71)&&(Rx_order_buffer[1]==69)&&(Rx_order_buffer[2]==84)&&(Rx_order_buffer[3]==95)){
+		if((Rx_order_buffer[4]==84)){
+			temperature=BMP_get_temperature();
+			printf("temperature : %ld\r\n",temperature);
+		}
+		else if((Rx_order_buffer[4]==80)){
+			pression=BMP_get_press();
+			printf("pression : %ld\r\n",pression);
+		}
+  [...]
+```
+ 
+ ### Fonction `motor_handle()`
 Nous avons eu plusieurs problèmes pour rédiger cette fonction. Sans valeur sur 8 bits (la fonction de compensation n'ayant pas fonctionnée) il a fallut gérer les données réceptionnées sur 32 bits. Pour cela, nous avons détourné l'usage du coefficient K pour diviser les valeur sur 32 bits par ce coeficient. Ainsi, nous nous sommes ramenées à des valeures moins fluctantes.
 
-Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes de la climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
+Puis nous avons fait une sorte de tout ou rien pour le moteur en comparant deux valeur succesives de températures. Si la température augmente, le moteur "ouvre les vannes d'un système de climatisation à fond" pour la baisser (angle de -90°) tandis que si la température diminue, le moteur ferme la vanne de climatisation en mettant le moteur en position +90°. Bien que limitée en application réelle, cette fonction est opérationelle.
+
+### Fonction de compensation Pression-Température
+
+
+
+Chaque mot de compensation est une valeur entière signée ou non signée de 16 bits stockée en complément à deux. La mémoire étant organisée en mots de 8 bits, deux mots doivent toujours être combinés pour représenter le mot de compensation. Les registres 8 bits sont nommés calib00…calib25 et sont stockés aux adresses mémoire 0x88…0xA1. Les mots de compensation correspondants sont nommés dig_T# pour les valeurs liées à la compensation de température et dig_P# pour les valeurs liées à la compensation de pression.
+
+
+### Interfaçage STM32-Rpi
 
 Les fonctions suivantes constituent l'interface entre la Rpi et la STM32. Malheureusemnt, nous n'avons pas eu le temps de la tester.
 
@@ -283,7 +308,7 @@ La fonction suivante est le fichier à executer pour lancer l'interface de commu
 
 ![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/fonction%20%C3%A0%20lancer%20pour%20envoyer%20un%20ordre.jpg)
 
-Pour donner un nom plus évocateur à notre fonction d'analyse, nous avons appelé la fonction `verification(user_command)` `analyse_command(user_command)`, dont le code est présenté ci-dessous.
+Pour donner un nom plus évocateur à notre fonction d'analyse, nous avons finalement appelé la fonction `verification(user_command)` `analyse_command(user_command)`, mais nous avons oublié de refaire la capture d'écran. Le code de `analyse_command(command)` est présenté ci-dessous.
 
 ![image](https://github.com/baptcott28/TP_capteur_cottu_jaimes/blob/main/analyse_STM_order.jpg)
 
